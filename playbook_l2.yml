@@ -1,0 +1,62 @@
+---
+- name: P1 
+  hosts: nti
+  vars_files: 
+    - ./vars.yml
+    - ./secret.yml
+
+  tasks:
+    - name: T1 adduser
+      user:
+        name: "{{ U  }}"
+        state: present
+        password: "{{ pass | password_hash('sha512')  }}"
+
+
+    - name: T2 install sw
+      dnf:
+        name: "{{ pkg  }}"
+        state: present
+
+    - name: T3 enable srv
+      service:
+        name: "{{ pkg }}"
+        state: started
+        enabled: yes     
+
+    - name: T4 open fw
+      firewalld:
+          service: "{{ s_port  }}"
+          state: enabled
+          permanent: yes
+          immediate: yes      
+
+
+    - name: T5 send app
+      copy:
+        src: "{{ app_files  }}"
+        dest: /var/www/html/index.html      
+
+    - name: T6 get info
+      debug:
+        msg:
+          - " {{ ansible_facts.memtotal_mb }} MB  "
+          - " {{ ansible_facts.processor_count }}  Vcpu   "      
+
+##### MEDO web check #####
+
+- name: P2
+  hosts: lh
+  user: student  
+  tasks:
+    - name: T2.1 call url
+      uri:
+        url: http://servera
+        status_code: 200
+        return_content: yes
+      register: site    
+
+    - name: T2.2
+      debug:
+        msg: "{{ site.content }}"      
+

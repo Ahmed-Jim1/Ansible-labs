@@ -1,0 +1,28 @@
+ 19  sudo dnf install -y ansible-core
+   20  sudo dnf list  | grep ansible
+   21  sudo dnf list  | grep ansible-n
+   22  sudo dnf install -y ansible-navigator
+   23  history 
+   24  ls -a
+   25  cat .ansible-navigator.yml 
+   26  vim ansible.cfg
+   27  vim inventory
+   28  ansible-inventory --list
+   29  ansible-inventory --graph
+   30  ansible-navigator inventory        -m stdout --graph
+   31  ansible-navigator inventory         --graph
+   32  ansible-navigator inventory        -m stdout --graph
+
+
+35  ansible  web -m command -a "dnf -y install httpd"
+   36  ansible  web -m command -a "dnf -y remove httpd"
+   37  ansible  web -m dnf -a "name=httpd state=present"
+   38  ansible  web -m dnf -a "name=httpd state=absent"
+   39  ansible  web -m user -a "name=medo  state=present password={{ 'nti' | password_hash('sha512')  }}"
+   40  ssh medo@servera
+   41  cat inventory 
+   42  ll ~/.ssh
+   43  ansible  web -m dnf -a "name=httpd state=present"
+   44  ansible  web -m service -a "name=httpd state=started enabled=yes"
+   45  ssh servera
+

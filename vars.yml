@@ -1,0 +1,6 @@
+---
+U: "medo"
+pkg: httpd
+s_port: http
+app_files: ./index.html
+

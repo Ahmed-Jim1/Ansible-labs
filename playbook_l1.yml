@@ -1,0 +1,50 @@
+---
+- name: P1 
+  hosts: nti
+  tasks:
+    - name: T1 adduser
+      user:
+        name: medo
+        state: present
+        password: "{{ 'nti' | password_hash('sha512')  }}"
+
+
+    - name: T2 install sw
+      dnf:
+        name: httpd
+        state: present
+
+    - name: T3 enable srv
+      service:
+        name: httpd
+        state: started
+        enabled: yes     
+
+    - name: T4 open fw
+      firewalld:
+          service: http
+          state: enabled
+          permanent: yes
+          immediate: yes      
+
+
+    - name: T5 send app
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html      
+
+
+##### MEDO web check #####
+
+- name: P2
+  hosts: lh
+  user: student  
+  tasks:
+    - name: T2.1 call url
+      uri:
+        url: http://servera
+        status_code: 200
+
+    - name: T2.2
+      debug:
+        msg: web site Running Well      
